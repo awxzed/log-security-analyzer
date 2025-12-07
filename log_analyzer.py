@@ -7,6 +7,7 @@ LOG_FILE = 'test_access.log'
 ip_counts = defaultdict(int)
 ip_timestamps = defaultdict(list)
 
+#Fonction de détection de contenu suspect dans les requêtes
 def check_content_anomaly(request_path):
     attack_signatures = [
         "union select",
@@ -23,7 +24,7 @@ def check_content_anomaly(request_path):
         if signature in request_path.lower():
             return True
     return False
-
+#Fonction de parsing des lignes de log
 def parse_log_line(line):
     pattern = r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - - \[(.*?)\] "(.*?)" (\d{3})'
     match = re.match(pattern, line)
@@ -43,7 +44,7 @@ def parse_log_line(line):
             'status_code': status_code
         }
     return None
-
+#Fonction d'analyse des Logs Principale
 def analyze_logs(log_file):
     anomalies = []
     
@@ -86,7 +87,7 @@ def analyze_logs(log_file):
     except FileNotFoundError:
         print(f"Error: File '{log_file}' not found.")
         return []
-
+#Affichage des résultats
 def display_results(anomalies):
     if not anomalies:
         print("No anomalies detected.")
